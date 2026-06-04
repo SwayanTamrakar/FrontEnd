@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand palette: blue, white, navy */
+  --color-brand: #3b82f6;
+  --color-navy: #1e3a8a;
+  --color-page: #ffffff;
+  --color-foreground: #1e3a8a;
+  --color-header: #1e3a8a;
+  --color-button: #3b82f6;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+}
