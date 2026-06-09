@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router'
 import { useAuth } from '../context/AuthContext';
 import { useState } from 'react';
 import api from '../api/axios';
+import { saveProfilePassword } from '../utils/profileStorage';
 
 type LoginForm = {
   email: string;
@@ -49,7 +50,8 @@ export function LoginPage() {
           form
         );
 
-      login(response.data.token);
+      login(response.data.token, form.email)
+      saveProfilePassword(form.email, form.password)
 
       navigate("/");
 

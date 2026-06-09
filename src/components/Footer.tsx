@@ -47,6 +47,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link to="/benefits" className={linkClass}>
+                  Benefits
+                </Link>
+              </li>
+              <li>
                 <Link to="/pricing" className={linkClass}>
                   Pricing
                 </Link>
@@ -98,16 +103,8 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-4 border-t border-page/10 pt-8 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+        <div className="mt-12 border-t border-page/10 pt-8">
           <p className="text-sm text-page/55">© 2026 CV Insight. All rights reserved.</p>
-          <div className="flex items-center gap-2 text-sm text-page/65">
-            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand text-page shadow-sm">
-              <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3} aria-hidden>
-                <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-              </svg>
-            </span>
-            <span>SOC 2 Type II Certified</span>
-          </div>
         </div>
       </div>
     </footer>

@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router'
+import { useAuth } from '../context/AuthContext'
 
 type FeatureCard = {
   title: string
@@ -234,6 +235,8 @@ const StarRating = () => (
 )
 
 const HomeLandingSections = () => {
+  const { isAuthenticated } = useAuth()
+
   return (
     <>
       <section className="border-t border-navy/10 bg-page py-20 sm:py-24 lg:py-28" aria-labelledby="hire-smarter-heading">
@@ -363,6 +366,7 @@ const HomeLandingSections = () => {
         </div>
       </section>
 
+      {!isAuthenticated && (
       <section className="bg-page py-16 sm:py-20 lg:py-24" aria-labelledby="cta-heading">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="relative mx-auto max-w-5xl overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand to-navy px-6 py-14 text-center shadow-2xl shadow-brand/25 sm:px-10 sm:py-16 lg:px-16 lg:py-20">
@@ -411,6 +415,7 @@ const HomeLandingSections = () => {
           </div>
         </div>
       </section>
+      )}
     </>
   )
 }
