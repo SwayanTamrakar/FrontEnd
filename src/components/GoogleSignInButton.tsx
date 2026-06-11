@@ -22,6 +22,9 @@ function GoogleIcon() {
 }
 
 export function GoogleSignInButton() {
+  const googleLogin = () => {
+    window.location.href = "http://localhost:8080/oauth2/authorization/google";
+  };
   return (
     <button
       type="button"
