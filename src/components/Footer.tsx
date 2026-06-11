@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router'
+import logo from '../assets/logo1.png'
 
-const linkClass = 'text-sm text-page/65 transition hover:text-page'
+const linkClass = 'text-sm font-medium text-navy transition hover:text-brand'
 
 type PlaceholderLinkProps = {
   children: ReactNode
@@ -17,25 +18,21 @@ function PlaceholderLink({ children }: PlaceholderLinkProps) {
 
 export default function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-navy text-page/70">
-      <div
-        className="pointer-events-none absolute inset-0 bg-[repeating-linear-gradient(-45deg,transparent,transparent_14px,rgba(255,255,255,0.04)_14px,rgba(255,255,255,0.04)_15px)] opacity-90"
-        aria-hidden
-      />
-      <div className="relative mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-16">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4 lg:gap-12">
+    <footer className="border-t border-navy/15 bg-brand/5 text-navy">
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4 lg:gap-8">
           <div className="md:col-span-2 lg:col-span-1">
-            <Link to="/" className="inline-flex items-center gap-2.5">
-              <span className="text-lg font-bold tracking-tight text-page">CV Insight</span>
+            <Link to="/" className="inline-flex items-center">
+              <img src={logo} alt="CV Insight" className="h-16 w-auto" />
             </Link>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-page/65">
+            <p className="mt-2 max-w-xs text-sm leading-relaxed text-navy/80">
               AI-powered resume screening platform for modern recruiting teams.
             </p>
           </div>
 
           <div>
-            <h2 className="text-sm font-semibold text-page">Product</h2>
-            <ul className="mt-4 flex flex-col gap-3">
+            <h2 className="text-sm font-semibold text-navy">Product</h2>
+            <ul className="mt-2 flex flex-col gap-1.5">
               <li>
                 <Link to="/features" className={linkClass}>
                   Features
@@ -65,8 +62,8 @@ export default function Footer() {
           </div>
 
           <div>
-            <h2 className="text-sm font-semibold text-page">Company</h2>
-            <ul className="mt-4 flex flex-col gap-3">
+            <h2 className="text-sm font-semibold text-navy">Company</h2>
+            <ul className="mt-2 flex flex-col gap-1.5">
               <li>
                 <Link to="/about" className={linkClass}>
                   About
@@ -85,8 +82,8 @@ export default function Footer() {
           </div>
 
           <div className="md:col-span-2 lg:col-span-1">
-            <h2 className="text-sm font-semibold text-page">Legal</h2>
-            <ul className="mt-4 flex flex-col gap-3">
+            <h2 className="text-sm font-semibold text-navy">Legal</h2>
+            <ul className="mt-2 flex flex-col gap-1.5">
               <li>
                 <PlaceholderLink>Privacy Policy</PlaceholderLink>
               </li>
@@ -103,8 +100,8 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 border-t border-page/10 pt-8">
-          <p className="text-sm text-page/55">© 2026 CV Insight. All rights reserved.</p>
+        <div className="mt-6 border-t border-navy/15 pt-4">
+          <p className="text-sm text-navy/75">© 2026 CV Insight. All rights reserved.</p>
         </div>
       </div>
     </footer>

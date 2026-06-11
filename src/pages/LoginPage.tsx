@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router'
 import { useAuth } from '../context/AuthContext';
 import { useState } from 'react';
 import api from '../api/axios';
+import { AuthDivider, GoogleSignInButton } from '../components/GoogleSignInButton';
 import { saveProfilePassword } from '../utils/profileStorage';
 
 type LoginForm = {
@@ -65,10 +66,10 @@ export function LoginPage() {
 
   return (
     <div className="mx-auto flex min-h-[60vh] max-w-md flex-col justify-center px-4 py-16 sm:px-6">
-      <h1 className="text-center text-3xl font-bold text-foreground">Sign in</h1>
+      <h1 className="text-center text-2xl font-bold text-foreground">Sign in</h1>
 
       <form
-        className="mt-10 space-y-5"
+        className="mt-5 space-y-3"
         onSubmit={handleSubmit}
       >
         <div>
@@ -107,7 +108,10 @@ export function LoginPage() {
         </button>
       </form>
 
-      <p className="mt-8 text-center text-sm text-foreground/75">
+      <AuthDivider label="or" />
+      <GoogleSignInButton />
+
+      <p className="mt-5 text-center text-sm text-foreground/75">
         New here?{' '}
         <Link to="/register" className="font-medium text-button hover:underline">
           Create an account

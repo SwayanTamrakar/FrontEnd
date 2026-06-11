@@ -15,6 +15,7 @@ import { NotFoundPage } from './pages/NotFoundPage'
 import { ProfilePage } from './pages/ProfilePage'
 import ProtectedRoute from './components/ProtectedRoute'
 import { AuthProvider } from './context/AuthContext'
+import OAuthSuccess from './pages/OAuthSuccess'
 
 function App() {
   return (
@@ -36,6 +37,8 @@ function App() {
           <Route path="pricing" element={<PricingPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
+
+        <Route path="/oauth-success" element={<OAuthSuccess />} />
       </Routes>
       </AuthProvider>
     </BrowserRouter>
