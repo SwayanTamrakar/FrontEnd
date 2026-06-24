@@ -1,119 +1,102 @@
 import {
   createContext,
-  useCallback,
   useContext,
   useEffect,
   useState,
   type ReactNode,
-} from 'react'
-import { loadProfileImage, saveProfileImage } from '../utils/profileStorage'
-import { getEmailFromToken } from '../utils/jwt'
+} from "react";
 
-const TOKEN_KEY = 'token'
-const EMAIL_KEY = 'userEmail'
+type User = {
+  id: number;
+  username: string;
+  email: string;
+  role: string;
+};
 
 type AuthContextType = {
-  token: string | null
-  userEmail: string | null
-  profileImage: string | null
-  isAuthenticated: boolean
-  login: (jwtToken: string, email?: string) => void
-  logout: () => void
-  setProfileImage: (image: string | null) => void
-}
+  token: string | null;
+  userDTO: User | null;
+  isAuthenticated: boolean;
+  login: (jwtToken: string, userData: User) => void;
+  logout: () => void;
+};
 
 type AuthProviderProps = {
-  children: ReactNode
-}
+  children: ReactNode;
+};
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined)
-
-function readStoredEmail(token: string | null): string | null {
-  const stored = localStorage.getItem(EMAIL_KEY)
-  if (stored) return stored
-  if (token) return getEmailFromToken(token)
-  return null
-}
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [token, setToken] = useState<string | null>(() => localStorage.getItem(TOKEN_KEY))
-  const [userEmail, setUserEmail] = useState<string | null>(() =>
-    readStoredEmail(localStorage.getItem(TOKEN_KEY))
-  )
-  const [profileImage, setProfileImageState] = useState<string | null>(() => {
-    const email = readStoredEmail(localStorage.getItem(TOKEN_KEY))
-    return email ? loadProfileImage(email) : null
-  })
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => !!localStorage.getItem(TOKEN_KEY))
 
-  const setProfileImage = useCallback(
-    (image: string | null) => {
-      setProfileImageState(image)
-      if (userEmail) {
-        saveProfileImage(userEmail, image)
-      }
-    },
-    [userEmail]
-  )
+  const [token, setToken] = useState<string | null>(() => {
+    const storedToken = localStorage.getItem("token");
+
+    if (!storedToken) {
+      return null;
+    }
+
+    return storedToken;
+  });
+
+  const [user, setUser] = useState<User | null>(() => {
+    const storedUser = localStorage.getItem("user");
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
+
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(!!token);
 
   useEffect(() => {
     if (token) {
-      localStorage.setItem(TOKEN_KEY, token)
-      setIsAuthenticated(true)
-    } else {
-      localStorage.removeItem(TOKEN_KEY)
-      localStorage.removeItem(EMAIL_KEY)
-      setUserEmail(null)
-      setProfileImageState(null)
-      setIsAuthenticated(false)
-    }
-  }, [token])
+      localStorage.setItem("token", token);
 
-  useEffect(() => {
-    if (userEmail) {
-      localStorage.setItem(EMAIL_KEY, userEmail)
-      setProfileImageState(loadProfileImage(userEmail))
-    } else {
-      localStorage.removeItem(EMAIL_KEY)
-    }
-  }, [userEmail])
+      if (user) {
+        localStorage.setItem("user", JSON.stringify(user));
+      }
 
-  const login = (jwtToken: string, email?: string) => {
-    const resolvedEmail = email ?? getEmailFromToken(jwtToken)
-    setToken(jwtToken)
-    setUserEmail(resolvedEmail)
-    if (resolvedEmail) {
-      setProfileImageState(loadProfileImage(resolvedEmail))
+      setIsAuthenticated(true);
+    } else {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+
+      setIsAuthenticated(false);
     }
-  }
+  }, [token, user]);
+
+  const login = (jwtToken: string, userData: User) => {
+    setToken(jwtToken);
+    setUser(userData);
+  };
 
   const logout = () => {
-    setToken(null)
-    setUserEmail(null)
-    setProfileImageState(null)
-  }
+    setToken(null);
+    setUser(null);
+
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+  };
 
   return (
     <AuthContext.Provider
       value={{
         token,
-        userEmail,
-        profileImage,
+        userDTO: user,
         isAuthenticated,
         login,
         logout,
-        setProfileImage,
       }}
     >
       {children}
     </AuthContext.Provider>
-  )
-}
+  );
+};
 
 export const useAuth = () => {
-  const context = useContext(AuthContext)
+  const context = useContext(AuthContext);
+
   if (!context) {
-    throw new Error('useAuth must be used within AuthProvider')
+    throw new Error("useAuth must be used within AuthProvider");
   }
-  return context
-}
+
+  return context;
+};

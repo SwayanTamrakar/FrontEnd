@@ -34,7 +34,7 @@ function OAuthSuccess() {
         }, 100);
         console.log("After navigate");
       } catch (error) {
-        console.error(error);
+        console.log(error);
         navigate("/login");
       }
     };

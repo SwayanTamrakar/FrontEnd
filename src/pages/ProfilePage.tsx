@@ -110,6 +110,8 @@ export function ProfilePage() {
   const navigate = useNavigate()
   const fileInputRef = useRef<HTMLInputElement>(null)
 
+  const {userDTO} = useAuth();
+
   const [profileForm, setProfileForm] = useState(emptyProfileForm)
   const [storedPassword, setStoredPassword] = useState<string | null>(null)
   const [editingName, setEditingName] = useState(false)
@@ -264,8 +266,8 @@ export function ProfilePage() {
   }
 
   const handleLogout = () => {
-    logout()
-    navigate('/')
+    logout();
+    navigate("/");
   }
 
   return (
@@ -326,10 +328,10 @@ export function ProfilePage() {
               Account information
             </h2>
             <dl className="mt-4 rounded-xl border border-navy/10 bg-brand/[0.03] px-4">
-              <DetailRow label="Full name" value={fullName} />
+              <DetailRow label="Full name" value={userDTO?.username} />
               <DetailRow label="Phone number" value={phoneNumber} />
               <DetailRow label="Password" value={passwordDisplay} />
-              <DetailRow label="Email" value={email ?? ''} />
+              <DetailRow label="Email" value={userDTO?.email} />
             </dl>
 
             <div className="mt-6 flex flex-wrap gap-3">

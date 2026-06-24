@@ -10,8 +10,16 @@ type LoginForm = {
   password: string;
 };
 
+type User = {
+  id: number;
+  username: string;
+  email: string;
+  role: string;
+};
+
 type LoginResponse = {
   token: string;
+  userDTO: User;
 };
 
 export function LoginPage() {
@@ -21,45 +29,32 @@ export function LoginPage() {
   const { login } =
     useAuth();
 
+  const googleLogin = () => {
+    window.location.href = "http://localhost:8080/oauth2/authorization/google";
+  };
+
   const [form, setForm] =
     useState<LoginForm>({
       email: "",
       password: "",
     });
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({
       ...form,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = async (
-    e: React.FormEvent<HTMLFormElement>
-  ) => {
-
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-
-      const response =
-        await api.post<LoginResponse>(
-          "/auth/login",
-          form
-        );
-
-      login(response.data.token, form.email)
-      saveProfilePassword(form.email, form.password)
-
+      const response = await api.post<LoginResponse>("/auth/login", form);
+      login(response.data.token, response.data.userDTO);
       navigate("/");
-
     } catch (error) {
-
       console.error(error);
-
       alert("Invalid credentials");
     }
   };
@@ -105,6 +100,9 @@ export function LoginPage() {
           className="w-full rounded-xl bg-button py-3 text-sm font-semibold text-page transition hover:brightness-95"
         >
           Log in
+        </button>
+        <button onClick={googleLogin} className="w-full rounded-xl bg-button py-3 text-sm font-semibold text-page transition hover:brightness-95">
+          Login with Google
         </button>
       </form>
 

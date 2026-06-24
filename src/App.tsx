@@ -8,6 +8,9 @@ import { BenefitsPage } from './pages/BenefitsPage'
 import { LoginPage } from './pages/LoginPage'
 import { RegisterPage } from './pages/RegisterPage'
 import { PricingPage } from './pages/PricingPage'
+import { PaymentPage } from './pages/PaymentPage'
+import { PaymentSuccessPage } from './pages/PaymentSuccessPage'
+import { PaymentFailurePage } from './pages/PaymentFailurePage'
 import { ResultsPage } from './pages/ResultsPage'
 import { ScreeningPage } from './pages/ScreeningPage'
 import { VerificationPage } from './pages/VerificationPage'
@@ -35,6 +38,9 @@ function App() {
           <Route path="verification" element={<ProtectedRoute><VerificationPage /></ProtectedRoute>} />
           <Route path="about" element={<AboutPage />} />
           <Route path="pricing" element={<PricingPage />} />
+          <Route path="payment" element={<ProtectedRoute><PaymentPage /></ProtectedRoute>} />
+          <Route path="payment/success" element={<ProtectedRoute><PaymentSuccessPage /></ProtectedRoute>} />
+          <Route path="payment/failure" element={<PaymentFailurePage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
 

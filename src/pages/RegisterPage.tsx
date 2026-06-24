@@ -2,11 +2,9 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router'
 import api from '../api/axios';
 import { AuthDivider, GoogleSignInButton } from '../components/GoogleSignInButton';
-import { saveProfileDetails } from '../utils/profileStorage';
 
 type RegisterForm = {
-  firstName: string;
-  lastName: string;
+  username: string;
   email: string;
   password: string;
 };
@@ -15,60 +13,33 @@ const inputClass =
   'mt-1.5 w-full rounded-lg border border-foreground/15 bg-page px-3.5 py-2.5 text-sm text-foreground outline-none focus:border-button focus:ring-2 focus:ring-button/25';
 
 export function RegisterPage() {
-  const navigate =
-    useNavigate();
+  const navigate = useNavigate();
+  const [form, setForm] = useState<RegisterForm>({
+    username: "",
+    email: "",
+    password: "",
+  });
 
-  const [form, setForm] =
-    useState<RegisterForm>({
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-    });
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({
       ...form,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = async (
-    e: React.FormEvent<HTMLFormElement>
-  ) => {
+  const googleLogin = () => {
+    window.location.href = "http://localhost:8080/oauth2/authorization/google";
+  };
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!form.firstName.trim() || !form.lastName.trim()) {
-      alert("Please enter your first and last name.");
-      return;
-    }
-
     try {
-
-      await api.post(
-        "/auth/register",
-        { email: form.email, password: form.password }
-      );
-
-      const fullName = `${form.firstName.trim()} ${form.lastName.trim()}`;
-      saveProfileDetails(form.email, {
-        username: fullName,
-        contact: '',
-        address: '',
-      });
-
+      await api.post("/auth/register", form);
       alert("Registration successful");
-
       navigate("/login");
-
     } catch (error) {
-
       console.error(error);
-
       alert("Registration failed");
     }
   };
@@ -81,33 +52,18 @@ export function RegisterPage() {
         className="mt-5 space-y-3"
         onSubmit={handleSubmit}
       >
-        <div className="grid gap-3 sm:grid-cols-2">
+        <div>
           <div>
             <label htmlFor="reg-first-name" className="block text-xs font-medium text-foreground">
-              First name
+              Name
             </label>
             <input
               id="reg-first-name"
-              name="firstName"
-              value={form.firstName}
+              name="username"
+              value={form.username}
               onChange={handleChange}
               type="text"
               autoComplete="given-name"
-              required
-              className={inputClass}
-            />
-          </div>
-          <div>
-            <label htmlFor="reg-last-name" className="block text-xs font-medium text-foreground">
-              Last name
-            </label>
-            <input
-              id="reg-last-name"
-              name="lastName"
-              value={form.lastName}
-              onChange={handleChange}
-              type="text"
-              autoComplete="family-name"
               required
               className={inputClass}
             />
@@ -161,6 +117,7 @@ export function RegisterPage() {
         >
           Register
         </button>
+        <button onClick={googleLogin} className="w-full rounded-lg bg-button py-2.5 text-sm font-semibold text-page transition hover:brightness-95">Login with Google</button>
       </form>
 
       <AuthDivider label="or" />
